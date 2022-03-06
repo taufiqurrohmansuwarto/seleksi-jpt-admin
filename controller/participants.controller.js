@@ -1,4 +1,9 @@
 import prisma from "../lib/prisma";
+const exceljs = require("exceljs");
+
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
 
 const dashboard = async (req, res) => {
   try {
@@ -115,6 +120,38 @@ const listParticipants = async (req, res) => {
     res.status(400).json({ code: 400, message: "Internal Server Error" });
   }
 };
+
+// untuk kebutuhan report dengan menggunakan excel
+const reportController = async (req, res) => {
+  try {
+    // kebutuhan excel
+    let workbook = new exceljs.Workbook();
+    let worksheet = workbook.addWorksheet("data");
+
+    //     dan data harus disesuaikan dengan key yang ada di worksheet columns
+
+    worksheet.columns = [{ header: "", key: "" }];
+
+    //     ada data
+    worksheet.addRows();
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "result.xlsx"
+    );
+
+    await workbook.xlsx.write(res);
+    res.status(200).end();
+  } catch (error) {
+    res.status(400).json({ code: 400, message: "Internal Server Error" });
+  }
+};
+
 export default {
   dashboard,
   listParticipants,

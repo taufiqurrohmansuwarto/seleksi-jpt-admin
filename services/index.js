@@ -1,33 +1,23 @@
 import axios from "axios";
 
-const getResume = () => {
-  return axios.get("/seleksi-jpt/api/profile").then((r) => r?.data);
+const listParticipants = (query) => {
+  return axios
+    .get(`/seleksi-jpt-admin/api/participants`)
+    .then((res) => res?.data);
 };
 
-const createResume = (data) => {
-  return axios.post("/seleksi-jpt/api/profile", data);
+const getParticipants = (participantId) => {
+  return axios
+    .get(`/seleksi-jpt-admin/api/participants/${participantId}/detail`)
+    .then((res) => res?.data);
 };
 
-const submitResume = () => {
-  return axios.post("/seleksi-jpt/api/submit");
-};
-
-const updateResume = (data) => {
-  return axios.patch("/seleksi-jpt/api/profile", data);
-};
-
-const updateFile = (data) => {
-  return axios.patch("/seleksi-jpt/api/file", data, {
-    headers: {
-      "Content-Type": "multipart/formData",
-    },
-  });
+const getDashboard = () => {
+  return axios.get(`/seleksi-jpt-admin/api/dashboard`).then((res) => res?.data);
 };
 
 export default {
-  getResume,
-  createResume,
-  submitResume,
-  updateResume,
-  updateFile,
+  getParticipants,
+  getDashboard,
+  listParticipants,
 };

@@ -102,6 +102,7 @@ model profiles {
   keterangan                           String?
   korektor                             String?
   is_correction                        Boolean?
+  correction_date                      DateTime?
   admin                                admin?     @relation(fields: [korektor], references: [id], onDelete: Cascade)
   documents                            documents?
 }
