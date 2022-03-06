@@ -8,7 +8,6 @@ datasource db {
 }
 
 model admin {
-  id         String     @id
   username   String     @unique @db.VarChar(200)
   password   String
   created_at DateTime?  @default(now()) @db.Timestamp(6)
@@ -16,6 +15,7 @@ model admin {
   roles      String     @default("USER")
   email      String     @default("bkd.jatimprov.go.id")
   picture    String     @default("https://master.bkd.jatimprov.go.id/images/foto_kosong.jpg")
+  id         Int        @id @default(autoincrement())
   profiles   profiles[]
 }
 
@@ -49,7 +49,6 @@ model documents {
   surat_pernyataan_tidak_pidana                      String?
   surat_pernyataan_tidak_pidana_is_verified          Boolean?  @default(false)
   surat_pernyataan_tidak_dijatuhi_hukdis             String?
-  surat_pernyataan_tidak_dijathui_hukdis_is_verified Boolean?  @default(false)
   surat_keterangan_pakta_integritas                  String?
   surat_keterangan_pakta_integritas_is_verified      Boolean?  @default(false)
   surat_keterangan_jasmani_rohani                    String?
@@ -59,6 +58,7 @@ model documents {
   created_at                                         DateTime? @default(now()) @db.Timestamp(6)
   updated_at                                         DateTime? @db.Timestamp(6)
   user_id                                            String    @id
+  surat_pernyataan_tidak_dijatuhi_hukdis_is_verified Boolean?  @default(false)
   profiles                                           profiles  @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }
 
@@ -100,9 +100,9 @@ model profiles {
   updated_at                           DateTime?  @db.Timestamp(6)
   is_qualified                         Boolean?
   keterangan                           String?
-  korektor                             String?
   is_correction                        Boolean?
   correction_date                      DateTime?
+  korektor                             Int?
   admin                                admin?     @relation(fields: [korektor], references: [id], onDelete: Cascade)
   documents                            documents?
 }

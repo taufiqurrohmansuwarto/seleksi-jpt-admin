@@ -1,49 +1,54 @@
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import prisma from "../../../lib/prisma";
 
-const clientSecret = process.env.MASTER_SECRET;
-const clientId = process.env.MASTER_ID;
-const wellKnown = process.env.MASTER_WELL_KNOWN;
-const scope = process.env.MASTER_SCOPE;
+const bcrypt = require("bcrypt");
 
 export default NextAuth({
   // Configure one or more authentication providers
-  pages: {
-    signIn: "/seleksi-jpt/signin",
-  },
   providers: [
-    {
-      name: "SIMASTER",
-      id: "seleksi-jpt",
-      type: "oauth",
-      wellKnown,
-      clientId,
-      clientSecret,
-      authorization: {
-        params: {
-          scope,
-          prompt: "login",
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        username: {
+          label: "Username",
+          type: "text",
+        },
+        password: {
+          label: "Password",
+          type: "password",
         },
       },
-      idToken: true,
-      checks: ["pkce", "state"],
-      profile(profile, token) {
-        const currentUser = {
-          id: profile.sub,
-          name: profile.name,
-          email: profile.email,
-          image: profile.picture,
-          employee_number: employee_number || "",
-          role,
-          group,
-        };
+      async authorize(credentials) {
+        try {
+          const { username, password } = credentials;
+          const user = await prisma.admin.findFirst({
+            where: {
+              username,
+            },
+          });
 
-        return currentUser;
+          if (user?.password) {
+            const checkPassword = await bcrypt.compare(
+              password,
+              user?.password
+            );
+
+            if (!checkPassword) {
+              return null;
+            } else {
+              const { password, ...currentUser } = user;
+              const myUser = { ...currentUser, sub: currentUser?.id };
+              return myUser;
+            }
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.log(error);
+          return null;
+        }
       },
-    },
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
     }),
   ],
   theme: {
@@ -55,11 +60,18 @@ export default NextAuth({
     },
     async session({ session, token }) {
       session.user.id = token.id;
+      session.user.email = token.email;
+      session.user.name = token.name;
+      session.user.image = token.picture;
+      session.user.picture = token.picture;
       return session;
     },
-    async jwt({ token, account }) {
+    async jwt({ token, account, user, profile }) {
       if (account) {
         token.id = account?.providerAccountId;
+        token.email = user?.email;
+        token.name = user?.username;
+        token.picture = user?.picture;
       }
       return token;
     },

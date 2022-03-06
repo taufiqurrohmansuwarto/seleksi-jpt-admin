@@ -1,10 +1,76 @@
+import {
+  UserAddOutlined,
+  UserDeleteOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { Button, Card, Col, Divider, Row, Statistic } from "antd";
+import { useSession } from "next-auth/react";
 import { useQuery } from "react-query";
 import services from "../services";
+import Layout from "../src/components/Layout";
 const Dashboard = () => {
   const { data } = useQuery(["dashboard"], () => services.getDashboard());
-  return <div>{JSON.stringify(data)}</div>;
+  const { data: user } = useSession();
+  return (
+    <Layout title="Dashboard">
+      <Card>
+        Selamat datang, {user?.user?.name}. Berikut adalah data yang ada pada
+        seleksi JPT Madya Pemerintah Provinsi Jawa Timur
+        <Divider />
+        <Row gutter={16}>
+          <Col span={5}>
+            <Card>
+              <Statistic
+                title="Total Peserta Submit"
+                value={`${data?.totalParticipantsSubmit} orang`}
+                prefix={<UserAddOutlined />}
+              />
+            </Card>
+          </Col>
+          <Col span={5}>
+            <Card>
+              <Statistic
+                title="Total Peserta belum Submit"
+                value={`${data?.totalParticipantsNotSubmit} orang`}
+                prefix={<UserDeleteOutlined />}
+              />
+            </Card>
+          </Col>
+          <Col span={5}>
+            <Card>
+              <Statistic
+                title="Total Peserta"
+                value={`${data?.totalParticipants} orang`}
+                prefix={<UserOutlined />}
+              />
+            </Card>
+          </Col>
+          <Col span={5}>
+            <Card>
+              <Statistic
+                title="Total Peserta Lolos"
+                value={`${data?.totalQualified} orang`}
+                prefix={<UserAddOutlined />}
+              />
+            </Card>
+          </Col>
+          <Col span={4}>
+            <Card>
+              <Statistic
+                title="Total Peserta Tidak Lolos"
+                value={`${data?.totalNotQualified} orang`}
+                prefix={<UserDeleteOutlined />}
+              />
+            </Card>
+          </Col>
+        </Row>
+        <Divider />
+        <Button type="primary">Download Data</Button>
+      </Card>
+    </Layout>
+  );
 };
 
-// Dashboard.auth = true;
+Dashboard.auth = true;
 
 export default Dashboard;

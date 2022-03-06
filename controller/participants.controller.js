@@ -1,4 +1,5 @@
 import prisma from "../lib/prisma";
+import properties from "../utils/properties";
 const exceljs = require("exceljs");
 
 BigInt.prototype.toJSON = function () {
@@ -8,14 +9,14 @@ BigInt.prototype.toJSON = function () {
 const dashboard = async (req, res) => {
   try {
     const totalParticipantsSubmit = await prisma.profiles.count({
-      where: { is_submit: false },
+      where: { is_submit: true },
     });
 
     const totalParticipants = await prisma.profiles.count();
 
     const totalParticipantsNotSubmit = await prisma.profiles.count({
       where: {
-        is_submit: true,
+        is_submit: false,
       },
     });
 
@@ -158,9 +159,12 @@ const report = async (req, res) => {
 
 const getParticipant = async (req, res) => {
   try {
-    const result = await prisma.profiles.findUnique({
+    const result = await prisma.profiles.findMany({
       where: {
         user_id: req.query?.participantId,
+        AND: {
+          is_submit: true,
+        },
       },
       include: {
         admin: true,
@@ -168,10 +172,18 @@ const getParticipant = async (req, res) => {
       },
     });
 
-    if (!result) {
-      res.status(404).json({ code: 404, message: "Participant not found" });
+    if (!result?.length) {
+      res.json(null);
     } else {
-      res.json(result);
+      const hasil = properties.documentPropertiesWithLabel?.map((d) => ({
+        key: d?.key,
+        description: d?.description,
+        value: `${process.env.FILE_URL}/${result[0]?.documents?.[d?.key]}`,
+        is_verified: result[0]?.documents?.[`${d?.key}_is_verified`],
+      }));
+
+      const data = { ...result[0], columns: hasil };
+      res.json(data);
     }
   } catch (error) {
     console.log(error);

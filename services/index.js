@@ -16,8 +16,18 @@ const getDashboard = () => {
   return axios.get(`/seleksi-jpt-admin/api/dashboard`).then((res) => res?.data);
 };
 
+const correction = ({ participantId, data }) => {
+  return axios
+    .post(
+      `/seleksi-jpt-admin/api/participants/${participantId}/correction`,
+      data
+    )
+    .then((res) => res?.data);
+};
+
 export default {
   getParticipant,
   getDashboard,
   listParticipants,
+  correction,
 };

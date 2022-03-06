@@ -1,4 +1,4 @@
-import { DashboardOutlined, SnippetsOutlined } from "@ant-design/icons";
+import { DashboardOutlined, TeamOutlined } from "@ant-design/icons";
 
 export default {
   routes: [
@@ -8,9 +8,9 @@ export default {
       icon: <DashboardOutlined />,
     },
     {
-      path: "/resume",
-      name: " Resume",
-      icon: <SnippetsOutlined />,
+      path: "/participants",
+      name: " Data Pelamar",
+      icon: <TeamOutlined />,
     },
   ],
 };
