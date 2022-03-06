@@ -25,9 +25,14 @@ const correction = ({ participantId, data }) => {
     .then((res) => res?.data);
 };
 
+const report = () => {
+  return axios.get(`/seleksi-jpt/admin/api/report`);
+};
+
 export default {
   getParticipant,
   getDashboard,
   listParticipants,
   correction,
+  report,
 };

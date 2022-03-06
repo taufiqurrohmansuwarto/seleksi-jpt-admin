@@ -3,14 +3,31 @@ import {
   UserDeleteOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Button, Card, Col, Divider, Row, Statistic } from "antd";
+import { Button, Card, Col, Divider, message, Row, Statistic } from "antd";
+import FileSaver from "file-saver";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import services from "../services";
 import Layout from "../src/components/Layout";
+
 const Dashboard = () => {
   const { data } = useQuery(["dashboard"], () => services.getDashboard());
   const { data: user } = useSession();
+  const [loading, setLoading] = useState(false);
+
+  const handleReport = async () => {
+    try {
+      setLoading(true);
+      const result = await services.report();
+      await FileSaver.saveAs(result?.data, "report.xls");
+    } catch (error) {
+      message.error("Error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Layout title="Dashboard">
       <Card>
@@ -65,7 +82,9 @@ const Dashboard = () => {
           </Col>
         </Row>
         <Divider />
-        <Button type="primary">Download Data</Button>
+        <Button type="primary" onClick={handleReport}>
+          Download Data
+        </Button>
       </Card>
     </Layout>
   );

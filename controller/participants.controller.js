@@ -61,14 +61,10 @@ const listParticipants = async (req, res) => {
       select: {
         nama_gelar: true,
         user_id: true,
-        is_correction: true,
+        instansi: true,
+        is_submit: true,
         is_qualified: true,
         korektor: true,
-        documents: {
-          select: {
-            drh: true,
-          },
-        },
         admin: {
           select: {
             username: true,
