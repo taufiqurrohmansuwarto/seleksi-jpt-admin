@@ -128,6 +128,10 @@ const reportController = async (req, res) => {
     let workbook = new exceljs.Workbook();
     let worksheet = workbook.addWorksheet("data");
 
+    const data = await prisma.profiles.findMany({});
+
+    // kemudian loop sesuai dengan dokumenmu
+
     //     dan data harus disesuaikan dengan key yang ada di worksheet columns
 
     worksheet.columns = [{ header: "", key: "" }];
