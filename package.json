@@ -1,0 +1,29 @@
+{
+  "name": "seleksi-jpt-jatim",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@ant-design/pro-layout": "^6.33.1",
+    "@prisma/client": "^3.10.0",
+    "antd": "^4.18.9",
+    "axios": "^0.26.0",
+    "babel-plugin-import": "^1.13.3",
+    "lodash": "^4.17.21",
+    "minio": "^7.0.26",
+    "multer": "^1.4.4",
+    "next": "12.1.0",
+    "next-auth": "^4.2.1",
+    "next-connect": "^0.12.2",
+    "next-plugin-antd-less": "^1.8.0",
+    "prisma": "^3.10.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-query": "^3.34.16"
+  }
+}

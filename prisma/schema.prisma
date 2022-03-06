@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model admin {
+  id         String     @id
+  username   String     @unique @db.VarChar(200)
+  password   String
+  created_at DateTime?  @default(now()) @db.Timestamp(6)
+  update_at  DateTime?  @db.Timestamp(6)
+  roles      String     @default("USER")
+  email      String     @default("bkd.jatimprov.go.id")
+  picture    String     @default("https://master.bkd.jatimprov.go.id/images/foto_kosong.jpg")
+  profiles   profiles[]
+}
+
+model documents {
+  surat_lamaran                                      String?
+  surat_lamaran_is_verified                          Boolean?  @default(false)
+  drh                                                String?
+  drh_is_verified                                    Boolean?  @default(false)
+  ktp                                                String?
+  ktp_is_verified                                    Boolean?  @default(false)
+  foto                                               String?
+  foto_is_verified                                   Boolean?  @default(false)
+  sk_pangkat                                         String?
+  sk_pangkat_is_verified                             Boolean?  @default(false)
+  sk_pengangkatan_jabatan_terakhir                   String?
+  sk_pengangkatan_jabatan_terakhir_is_verified       Boolean?  @default(false)
+  sk_pengangkatan_pertama_kali                       String?
+  sk_pengangkatan_pertama_kali_is_verified           Boolean?  @default(false)
+  ijazah                                             String?
+  ijazah_is_verified                                 Boolean?  @default(false)
+  sttp                                               String?
+  sttp_is_verified                                   Boolean?  @default(false)
+  skp                                                String?
+  skp_is_verified                                    Boolean?  @default(false)
+  lhkpn                                              String?
+  lhkpn_is_verified                                  Boolean?  @default(false)
+  spt                                                String?
+  spt_is_verified                                    Boolean?  @default(false)
+  surat_rekomendasi                                  String?
+  surat_rekomendasi_is_verified                      Boolean?  @default(false)
+  surat_pernyataan_tidak_pidana                      String?
+  surat_pernyataan_tidak_pidana_is_verified          Boolean?  @default(false)
+  surat_pernyataan_tidak_dijatuhi_hukdis             String?
+  surat_pernyataan_tidak_dijathui_hukdis_is_verified Boolean?  @default(false)
+  surat_keterangan_pakta_integritas                  String?
+  surat_keterangan_pakta_integritas_is_verified      Boolean?  @default(false)
+  surat_keterangan_jasmani_rohani                    String?
+  surat_keterangan_jasmani_rohani_is_verified        Boolean?  @default(false)
+  surat_keterangan_bebas_napza                       String?
+  surat_keterangan_bebas_napza_is_verified           Boolean?  @default(false)
+  created_at                                         DateTime? @default(now()) @db.Timestamp(6)
+  updated_at                                         DateTime? @db.Timestamp(6)
+  user_id                                            String    @id
+  profiles                                           profiles  @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+}
+
+model profiles {
+  nama_gelar                           String?    @db.VarChar(200)
+  nama_gelar_is_verified               Boolean?   @default(false)
+  nip                                  String?    @db.VarChar(200)
+  nip_is_verified                      Boolean?   @default(false)
+  tempat_lahir                         String?    @db.VarChar(200)
+  tempat_lahir_is_verified             Boolean?   @default(false)
+  tanggal_lahir                        DateTime?  @db.Date
+  tanggal_lahir_is_verified            Boolean?   @default(false)
+  alamat_email                         String?    @db.VarChar(200)
+  alamat_email_is_verified             Boolean?   @default(false)
+  no_hp                                String?    @db.VarChar(200)
+  no_hp_is_verified                    Boolean?   @default(false)
+  pendidikan_terakhir                  String?    @db.VarChar(200)
+  pendidikan_terakhir_is_verified      Boolean?   @default(false)
+  tahun_lulus                          Int?       @db.SmallInt
+  tahun_lulus_is_verified              Boolean?   @default(false)
+  gol_pangkat                          String?    @db.VarChar(200)
+  gol_pangkat_is_verified              Boolean?   @default(false)
+  tmt_pangkat                          DateTime?  @db.Date
+  tmt_pangkat_is_verified              Boolean?   @default(false)
+  jabatan_terakhir                     String?    @db.VarChar(200)
+  jabatan_terakhir_is_verified         Boolean?   @default(false)
+  eselon_terakhir                      String?    @db.VarChar(200)
+  eselon_terakhir_is_verified          Boolean?   @default(false)
+  tmt_jab_terakhir                     DateTime?  @db.Date
+  tmt_jab_terakhir_is_verified         Boolean?   @default(false)
+  instansi                             String?    @db.VarChar(200)
+  instansi_is_verified                 Boolean?   @default(false)
+  tmt_pengangkatan_pertama             DateTime?  @db.Date
+  tmt_pengangkatan_pertama_is_verified Boolean?   @default(false)
+  is_submit                            Boolean?   @default(false)
+  is_ready_step_1                      Boolean?   @default(false)
+  created_at                           DateTime   @default(now()) @db.Timestamp(6)
+  user_id                              String     @id @unique(map: "profiles_user_id_idx") @db.VarChar(200)
+  updated_at                           DateTime?  @db.Timestamp(6)
+  is_qualified                         Boolean?
+  keterangan                           String?
+  korektor                             String?
+  is_correction                        Boolean?
+  admin                                admin?     @relation(fields: [korektor], references: [id], onDelete: Cascade)
+  documents                            documents?
+}
