@@ -210,4 +210,6 @@ const ParticipantDetail = () => {
   );
 };
 
+ParticipantDetail.auth = true;
+
 export default ParticipantDetail;

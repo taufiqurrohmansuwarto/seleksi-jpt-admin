@@ -28,4 +28,6 @@ const Participants = () => {
   );
 };
 
+Participants.auth = true;
+
 export default Participants;
