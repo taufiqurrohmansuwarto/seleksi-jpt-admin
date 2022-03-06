@@ -122,7 +122,7 @@ const listParticipants = async (req, res) => {
 };
 
 // untuk kebutuhan report dengan menggunakan excel
-const reportController = async (req, res) => {
+const report = async (req, res) => {
   try {
     // kebutuhan excel
     let workbook = new exceljs.Workbook();
@@ -156,7 +156,32 @@ const reportController = async (req, res) => {
   }
 };
 
+const getParticipant = async (req, res) => {
+  try {
+    const result = await prisma.profiles.findUnique({
+      where: {
+        user_id: req.query?.participantId,
+      },
+      include: {
+        admin: true,
+        documents: true,
+      },
+    });
+
+    if (!result) {
+      res.status(404).json({ code: 404, message: "Participant not found" });
+    } else {
+      res.json(result);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ code: 400, message: "Intenal Server Error" });
+  }
+};
+
 export default {
   dashboard,
   listParticipants,
+  getParticipant,
+  report,
 };

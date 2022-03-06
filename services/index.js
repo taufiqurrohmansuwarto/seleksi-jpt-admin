@@ -6,9 +6,9 @@ const listParticipants = (query) => {
     .then((res) => res?.data);
 };
 
-const getParticipants = (participantId) => {
+const getParticipant = (participantId) => {
   return axios
-    .get(`/seleksi-jpt-admin/api/participants/${participantId}/detail`)
+    .get(`/seleksi-jpt-admin/api/participants/${participantId}`)
     .then((res) => res?.data);
 };
 
@@ -17,7 +17,7 @@ const getDashboard = () => {
 };
 
 export default {
-  getParticipants,
+  getParticipant,
   getDashboard,
   listParticipants,
 };
