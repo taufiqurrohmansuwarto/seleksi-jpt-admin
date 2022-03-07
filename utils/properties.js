@@ -100,6 +100,27 @@ const documentPropertiesWithLabel = [
   },
 ];
 
+const profilePropertiesObject = [
+  { key: "nama_gelar", title: "Nama dan Gelar" },
+  { key: "nip", title: "NIP" },
+  { key: "tempat_lahir", title: "Tempat Lahir" },
+  { key: "tanggal_lahir", title: "Tanggal Lahir" },
+  { key: "alamat_email", title: "Alamat Email" },
+  { key: "no_hp", title: "No. HP" },
+  { key: "pendidikan_terakhi", title: "Pendidikan Terakhir" },
+  { key: "tahun_lulus", title: "Tahun Lulus" },
+  { key: "gol_pangkat", title: "Golongan/Pangkat" },
+  { key: "tmt_pangkat", title: "TMT Pangkat" },
+  { key: "jabatan_terakhir", title: "Jabatan Terakhir" },
+  { key: "eselon_terakhir", title: "Eselon Terakhir" },
+  { key: "tmt_jab_terakhir", title: "TMT Jabatan Terakhir" },
+  { key: "instansi", title: "Instansi" },
+  { key: "tmt_pengangkatan_pertama", title: "TMT Pengangkatan Pertama" },
+  { key: "is_submit", title: "Sudah Submit" },
+  { key: "is_qualified", title: "Lolos?" },
+  { key: "keterangan", title: "Keterangan Tidak lolos" },
+];
+
 const profileProperties = [
   "nama_gelar",
   "nip",
@@ -122,4 +143,5 @@ export default {
   documentProperties,
   profileProperties,
   documentPropertiesWithLabel,
+  profilePropertiesObject,
 };

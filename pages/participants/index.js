@@ -18,7 +18,7 @@ const Participants = () => {
 
   return (
     <Layout title="Data Pelamar">
-      <div>{JSON.stringify(data)}</div>;
+      <div>{JSON.stringify(data)}</div>
       <Table
         dataSource={data?.data}
         rowKey={(row) => row?.user_id}

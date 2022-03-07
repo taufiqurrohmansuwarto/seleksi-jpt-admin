@@ -131,10 +131,15 @@ const report = async (req, res) => {
 
     //     dan data harus disesuaikan dengan key yang ada di worksheet columns
 
-    worksheet.columns = [{ header: "", key: "" }];
+    const columns = properties.profilePropertiesObject?.map((d) => ({
+      header: d?.title,
+      key: d?.key,
+    }));
+
+    worksheet.columns = columns;
 
     //     ada data
-    worksheet.addRows();
+    worksheet.addRows(data);
 
     res.setHeader(
       "Content-Type",

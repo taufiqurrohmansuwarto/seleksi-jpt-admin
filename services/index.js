@@ -1,8 +1,10 @@
 import axios from "axios";
+import qs from "query-string";
 
-const listParticipants = (query) => {
+const listParticipants = (query = { limit: 10, offest: 0 }) => {
+  const url = qs.stringify(query);
   return axios
-    .get(`/seleksi-jpt-admin/api/participants`)
+    .get(`/seleksi-jpt-admin/api/participants?${url}`)
     .then((res) => res?.data);
 };
 
@@ -26,7 +28,7 @@ const correction = ({ participantId, data }) => {
 };
 
 const report = () => {
-  return axios.get(`/seleksi-jpt/admin/api/report`);
+  return axios.get(`/seleksi-jpt-admin/api/report`, { responseType: "blob" });
 };
 
 export default {

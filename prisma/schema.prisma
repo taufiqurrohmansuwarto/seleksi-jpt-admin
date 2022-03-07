@@ -103,6 +103,7 @@ model profiles {
   is_correction                        Boolean?
   correction_date                      DateTime?
   korektor                             Int?
+  nomer_peserta                        String?
   admin                                admin?     @relation(fields: [korektor], references: [id], onDelete: Cascade)
   documents                            documents?
 }
