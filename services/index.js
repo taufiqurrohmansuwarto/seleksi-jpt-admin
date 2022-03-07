@@ -3,6 +3,7 @@ import qs from "query-string";
 
 const listParticipants = (query = { limit: 10, offest: 0 }) => {
   const url = qs.stringify(query);
+  console.log(url);
   return axios
     .get(`/seleksi-jpt-admin/api/participants?${url}`)
     .then((res) => res?.data);

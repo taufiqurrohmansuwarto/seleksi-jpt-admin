@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import services from "../../../services";
+import Layout from "../../../src/components/Layout";
 
 const Documents = ({ data, participantId, queryClient }) => {
   const correctionMutation = useMutation((data) => services.correction(data), {
@@ -194,7 +195,7 @@ const ParticipantDetail = () => {
   }
 
   return (
-    <div>
+    <Layout title="Detail Pelamar">
       {data && (
         <>
           <Profile data={data} />
@@ -206,7 +207,7 @@ const ParticipantDetail = () => {
           />
         </>
       )}
-    </div>
+    </Layout>
   );
 };
 

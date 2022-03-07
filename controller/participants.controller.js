@@ -60,6 +60,7 @@ const listParticipants = async (req, res) => {
       where: {},
       select: {
         nama_gelar: true,
+        alamat_email: true,
         user_id: true,
         instansi: true,
         is_submit: true,
@@ -87,27 +88,29 @@ const listParticipants = async (req, res) => {
     }
 
     if (query?.is_qualified) {
+      const is_qualified = query?.is_qualified === "true" ? true : false;
       currentQuery = {
         ...currentQuery,
         where: {
           ...currentQuery?.where,
-          is_qualified: !!query?.is_qualified,
+          is_qualified,
         },
       };
     }
 
-    if (query?.is_correction) {
+    if (query?.is_submit) {
+      const is_submit = query?.is_submit === "true" ? true : false;
       currentQuery = {
         ...currentQuery,
         where: {
           ...currentQuery?.where,
-          is_correction: !!query?.is_correction,
+          is_submit,
         },
       };
     }
 
     const [total, data] = await prisma.$transaction([
-      prisma.profiles.count(currentQuery?.where),
+      prisma.profiles.count({ where: currentQuery?.where }),
       prisma.profiles.findMany(currentQuery),
     ]);
 
